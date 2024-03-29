@@ -8,9 +8,14 @@ service UsersService {
     rpc FindOneUser(FindOneUserRequest) returns (User) {}
     rpc UpdateUser(UpdateUserRequest) returns (User) {}
     rpc RemoveUser(FindOneUserRequest) returns (User) {}
-    rpc LoginUser(CreateUserRequest) returns (LoginResponse) {}
+    rpc LoginUser(LoginUserRequest) returns (LoginResponse) {}
     rpc LogoutUser(LogoutUserRequest) returns (User) {}
     rpc QueryUsers(stream PaginationRequest) returns (stream Users) {}
+}
+
+message LoginUserRequest {
+  string login = 1;
+  string password = 2;
 }
 
 message LogoutUserRequest {

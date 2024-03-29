@@ -1,8 +1,9 @@
 /* eslint-disable */
-import { GrpcMethod, GrpcStreamMethod } from "@nestjs/microservices";
-import { Observable } from "rxjs";
+import { GrpcMethod, GrpcStreamMethod } from '@nestjs/microservices';
+import { Observable } from 'rxjs';
+import { File } from './file';
 
-export const protobufPackage = "course";
+export const protobufPackage = 'course';
 
 export interface SetCourseFileRequest {
   courseId: number;
@@ -10,18 +11,13 @@ export interface SetCourseFileRequest {
 }
 
 export interface SetCourseFileResponse {
-  course: Course | undefined;
+  course: Course;
   files: File[];
 }
 
 export interface PaginationRequest {
   page: number;
   skip: number;
-}
-
-export interface File {
-  id: number;
-  fileName: string;
 }
 
 export interface CreateCourseRequest {
@@ -31,16 +27,16 @@ export interface CreateCourseRequest {
 }
 
 export interface CreateCourseResponse {
-  data: Course | undefined;
+  data: Course;
   errorStatus: number;
   errorMessage: string;
 }
 
 export interface UpdateCourseRequest {
   id: number;
-  courseName: string;
-  price: number;
-  duration: number;
+  courseName?: string;
+  price?: number;
+  duration?: number;
 }
 
 export interface FindOneCourseRequest {
@@ -58,72 +54,121 @@ export interface Courses {
   courses: Course[];
 }
 
-export interface Empty {
-}
+export interface Empty {}
 
-export const COURSE_PACKAGE_NAME = "course";
+export const COURSE_PACKAGE_NAME = 'course';
 
 export interface CourseServiceClient {
-  createCourse(request: CreateCourseRequest): Observable<Course>;
+  createCourse(request: CreateCourseRequest): Observable<CreateCourseResponse>;
 
   findAllCourses(request: Empty): Observable<Courses>;
 
-  findOneCourse(request: FindOneCourseRequest): Observable<Course>;
+  findOneCourse(
+    request: FindOneCourseRequest,
+  ): Observable<CreateCourseResponse>;
 
-  updateCourse(request: UpdateCourseRequest): Observable<Course>;
+  updateCourse(request: UpdateCourseRequest): Observable<CreateCourseResponse>;
 
-  removeCourse(request: FindOneCourseRequest): Observable<Course>;
+  removeCourse(request: FindOneCourseRequest): Observable<CreateCourseResponse>;
 
-  queryCourse(request: Observable<PaginationRequest>): Observable<Course>;
-
-  setCourseFile(request: SetCourseFileRequest): Observable<SetCourseFileResponse>;
-
-  removeFilesFromCourse(request: SetCourseFileRequest): Observable<SetCourseFileResponse>;
-}
-
-export interface CourseServiceController {
-  createCourse(request: CreateCourseRequest): Promise<Course> | Observable<Course> | Course;
-
-  findAllCourses(request: Empty): Promise<Courses> | Observable<Courses> | Courses;
-
-  findOneCourse(request: FindOneCourseRequest): Promise<Course> | Observable<Course> | Course;
-
-  updateCourse(request: UpdateCourseRequest): Promise<Course> | Observable<Course> | Course;
-
-  removeCourse(request: FindOneCourseRequest): Promise<Course> | Observable<Course> | Course;
-
-  queryCourse(request: Observable<PaginationRequest>): Observable<Course>;
+  queryCourse(
+    request: Observable<PaginationRequest>,
+  ): Observable<CreateCourseResponse>;
 
   setCourseFile(
     request: SetCourseFileRequest,
-  ): Promise<SetCourseFileResponse> | Observable<SetCourseFileResponse> | SetCourseFileResponse;
+  ): Observable<SetCourseFileResponse>;
 
   removeFilesFromCourse(
     request: SetCourseFileRequest,
-  ): Promise<SetCourseFileResponse> | Observable<SetCourseFileResponse> | SetCourseFileResponse;
+  ): Observable<SetCourseFileResponse>;
+}
+
+export interface CourseServiceController {
+  createCourse(
+    request: CreateCourseRequest,
+  ):
+    | Promise<CreateCourseResponse>
+    | Observable<CreateCourseResponse>
+    | CreateCourseResponse;
+
+  findAllCourses(
+    request: Empty,
+  ): Promise<Courses> | Observable<Courses> | Courses;
+
+  findOneCourse(
+    request: FindOneCourseRequest,
+  ):
+    | Promise<CreateCourseResponse>
+    | Observable<CreateCourseResponse>
+    | CreateCourseResponse;
+
+  updateCourse(
+    request: UpdateCourseRequest,
+  ):
+    | Promise<CreateCourseResponse>
+    | Observable<CreateCourseResponse>
+    | CreateCourseResponse;
+
+  removeCourse(
+    request: FindOneCourseRequest,
+  ):
+    | Promise<CreateCourseResponse>
+    | Observable<CreateCourseResponse>
+    | CreateCourseResponse;
+
+  queryCourse(
+    request: Observable<PaginationRequest>,
+  ): Observable<CreateCourseResponse>;
+
+  setCourseFile(
+    request: SetCourseFileRequest,
+  ):
+    | Promise<SetCourseFileResponse>
+    | Observable<SetCourseFileResponse>
+    | SetCourseFileResponse;
+
+  removeFilesFromCourse(
+    request: SetCourseFileRequest,
+  ):
+    | Promise<SetCourseFileResponse>
+    | Observable<SetCourseFileResponse>
+    | SetCourseFileResponse;
 }
 
 export function CourseServiceControllerMethods() {
   return function (constructor: Function) {
     const grpcMethods: string[] = [
-      "createCourse",
-      "findAllCourses",
-      "findOneCourse",
-      "updateCourse",
-      "removeCourse",
-      "setCourseFile",
-      "removeFilesFromCourse",
+      'createCourse',
+      'findAllCourses',
+      'findOneCourse',
+      'updateCourse',
+      'removeCourse',
     ];
     for (const method of grpcMethods) {
-      const descriptor: any = Reflect.getOwnPropertyDescriptor(constructor.prototype, method);
-      GrpcMethod("CourseService", method)(constructor.prototype[method], method, descriptor);
+      const descriptor: any = Reflect.getOwnPropertyDescriptor(
+        constructor.prototype,
+        method,
+      );
+      GrpcMethod('CourseService', method)(
+        constructor.prototype[method],
+        method,
+        descriptor,
+      );
     }
-    const grpcStreamMethods: string[] = ["queryCourse"];
+    const grpcStreamMethods: string[] = ['queryCourse'];
     for (const method of grpcStreamMethods) {
-      const descriptor: any = Reflect.getOwnPropertyDescriptor(constructor.prototype, method);
-      GrpcStreamMethod("CourseService", method)(constructor.prototype[method], method, descriptor);
+      const descriptor: any = Reflect.getOwnPropertyDescriptor(
+        constructor.prototype,
+        method,
+      );
+      GrpcStreamMethod('CourseService', method)(
+        constructor.prototype[method],
+        method,
+        descriptor,
+      );
     }
   };
 }
 
-export const COURSE_SERVICE_NAME = "CourseService";
+export const COURSE_SERVICE_NAME = 'CourseService';

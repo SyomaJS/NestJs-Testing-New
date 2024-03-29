@@ -5,12 +5,12 @@ import {
   Unique,
   ManyToMany,
   JoinTable,
-} from "typeorm";
-import { Course } from "./course.entity";
-import { User as IUserAttr } from "../interfaces/auth";
+} from 'typeorm';
+import { Course } from './course.entity';
+import { User as IUserAttr } from '../interfaces/auth';
 
-@Entity({ name: "user", schema: "auth" })
-@Unique(["login"])
+@Entity({ name: 'user', schema: 'auth' })
+@Unique(['login'])
 export class User implements IUserAttr {
   @PrimaryGeneratedColumn()
   id: number;

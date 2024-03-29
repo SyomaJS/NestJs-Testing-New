@@ -1,14 +1,15 @@
 import {
-  Entity,
   Column,
-  PrimaryGeneratedColumn,
-  ManyToMany,
+  Entity,
   JoinTable,
+  ManyToMany,
+  PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Course } from './course.entity';
 
 @Entity({ name: 'file', schema: 'core' })
 export class File {
+  
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -21,4 +22,5 @@ export class File {
   @ManyToMany(() => Course, (course) => course.files, { cascade: true })
   @JoinTable()
   courses: Course[];
+
 }

@@ -1,4 +1,4 @@
-import { Observable } from "rxjs";
+import { Observable } from 'rxjs';
 export declare const protobufPackage = "auth";
 export interface LogoutUserRequest {
     refreshToken: string;
